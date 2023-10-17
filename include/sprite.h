@@ -9,16 +9,13 @@
 
 struct sprite_s
 {
-    SDL_Surface *surface;
     SDL_Texture *texture;
     SDL_Rect rect;
-    point_t point;
+    point_t position;
 };
 typedef struct sprite_s sprite_t;
 
-sprite_t *sprite_create(char *path, int x, int y, int rect_width,
-                        int rect_height, window_t *window);
-
+sprite_t *sprite_create(char *path, SDL_Rect display_rect, window_t *window);
 void sprite_render(sprite_t *sprite, window_t *window);
 void sprite_destroy(sprite_t *sprite);
 

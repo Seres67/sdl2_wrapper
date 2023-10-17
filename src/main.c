@@ -3,6 +3,7 @@
 #include "SDL_timer.h"
 #include "SDL_video.h"
 #include "game_engine.h"
+#include "player.h"
 #include "sprite.h"
 #include "window.h"
 #include <math.h>
@@ -16,8 +17,9 @@ int main(int ac, char *av[])
     if (!win) {
         return 1;
     }
-    sprite_t *sprite = sprite_create("res/prout.jpg", 0, 0, 256, 256, win);
-    if (!sprite) {
+    player_t *player =
+        create_player("../res/prout.jpg", (SDL_Rect){0, 0, 256, 256}, win);
+    if (!player) {
         return 1;
     }
     SDL_Event e;
@@ -34,14 +36,15 @@ int main(int ac, char *av[])
             }
         }
         window_clear(win);
-        sprite_render(sprite, win);
+        sprite_render(player->sprite, win);
         window_update(win);
         uint64_t end = SDL_GetPerformanceCounter();
         float elapsed =
             (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.f;
         SDL_Delay(floor(16.333f - elapsed));
     }
-    sprite_destroy(sprite);
+    sprite_destroy(player->sprite);
+    free(player);
     window_destroy(win);
     SDL_Quit();
     return 0;
