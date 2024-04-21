@@ -1,25 +1,19 @@
-#ifndef GAME_ENGINE_WINDOW_H
-#define GAME_ENGINE_WINDOW_H
+#ifndef SDL2_WRAPPER_WINDOW_H
+#define SDL2_WRAPPER_WINDOW_H
 
-#include "SDL_render.h"
-#include "SDL_surface.h"
-#include "SDL_video.h"
-#include <SDL2/SDL.h>
+#include "point.h"
+#include <SDL2/SDL_render.h>
 
-struct window_s
+typedef struct
 {
-    SDL_Window *window;
     SDL_Renderer *renderer;
-    _Bool open;
-};
+    SDL_Window *window;
+} wrapper_window;
 
-typedef struct window_s window_t;
+wrapper_window *wrapper_create_window(const char *title, wrapper_vector_2d pos,
+                                      wrapper_vector_2d size);
+void wrapper_window_close(wrapper_window *window);
+void wrapper_window_render(wrapper_window *window);
+void wrapper_window_clear(wrapper_window *window, wrapper_vector_4d color);
 
-window_t *window_create(char *title, int x, int y);
-_Bool window_isopen(window_t *window);
-void window_close(window_t *window);
-void window_clear(window_t *window);
-void window_update(window_t *window);
-void window_destroy(window_t *window);
-
-#endif // !GAME_ENGINE_WINDOW_H
+#endif // !SDL2_WRAPPER_WINDOW_H

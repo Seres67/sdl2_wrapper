@@ -1,11 +1,25 @@
-#ifndef GAME_ENGINE_POINT_H
-#define GAME_ENGINE_POINT_H
+#ifndef SDL2_WRAPPER_POINT_H
+#define SDL2_WRAPPER_POINT_H
 
-struct point_s
+typedef struct wrapper_vector_2d_s
 {
     int x;
     int y;
-};
-typedef struct point_s point_t;
+} wrapper_vector_2d;
 
-#endif // !GAME_ENGINE_POINT_H
+typedef struct
+{
+    int x;
+    int y;
+    int z;
+} wrapper_vector_3d;
+
+typedef struct
+{
+    int i;
+    int j;
+    int k;
+    int l;
+} wrapper_vector_4d;
+
+#endif // !SDL2_WRAPPER_POINT_H

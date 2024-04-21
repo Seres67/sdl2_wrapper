@@ -1,45 +1,39 @@
-#include "include/window.h"
-#include "SDL_pixels.h"
-#include "SDL_render.h"
-#include "SDL_surface.h"
-#include "SDL_video.h"
-#include <stdio.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_video.h>
+#include <window.h>
 
-window_t *window_create(char *title, int x, int y)
+wrapper_window *wrapper_create_window(const char *title, wrapper_vector_2d pos,
+                                      wrapper_vector_2d size)
 {
-    window_t *window = (window_t *)malloc(sizeof(window_t));
-    if (!window) {
-        fprintf(stderr, "couldn't allocate %s:%d", __FILE__, __LINE__);
+    wrapper_window *window = malloc(sizeof(wrapper_window));
+
+    if (!window)
         return NULL;
-    }
-    window->window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
-                                      SDL_WINDOWPOS_UNDEFINED, x, y,
-                                      SDL_WINDOW_FULLSCREEN_DESKTOP);
-    if (!window->window) {
-        fprintf(stderr, "couldn't create window\n");
+    window->window = SDL_CreateWindow(title, pos.x, pos.x, size.x, size.y, 0);
+    if (!window->window)
         return NULL;
-    }
     window->renderer =
-        SDL_CreateRenderer(window->window, -1, SDL_RENDERER_ACCELERATED);
-    if (!window->renderer) {
-        fprintf(stderr, "couldn't create renderer\n");
+        SDL_CreateRenderer(window->window, -1, SDL_RENDERER_SOFTWARE);
+    if (!window->renderer)
         return NULL;
-    }
-    window->open = 1;
     return window;
 }
 
-_Bool window_isopen(window_t *window) { return window->open; }
-
-void window_close(window_t *window) { window->open = 0; }
-
-void window_clear(window_t *window) { SDL_RenderClear(window->renderer); }
-
-void window_update(window_t *window) { SDL_RenderPresent(window->renderer); }
-
-void window_destroy(window_t *window)
+void wrapper_window_close(wrapper_window *window)
 {
     SDL_DestroyRenderer(window->renderer);
     SDL_DestroyWindow(window->window);
     free(window);
+}
+
+void wrapper_window_render(wrapper_window *window)
+{
+    SDL_RenderPresent(window->renderer);
+}
+
+void wrapper_window_clear(wrapper_window *window, wrapper_vector_4d color)
+{
+    SDL_SetRenderDrawColor(window->renderer, color.i, color.j, color.k,
+                           color.l);
+    SDL_RenderClear(window->renderer);
 }
